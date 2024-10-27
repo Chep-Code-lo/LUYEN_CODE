@@ -13,7 +13,4 @@ int main(){
         if(it.second == maxx)
             pos = it.first;
     cout << pos;
-
-    
-    
 }
