@@ -11,11 +11,7 @@ int main() {
     int width = x_right - x_left;
     int height = y_top - y_bottom;
     int area = 0;
-
-    if (width > 0 && height > 0) {
+    if (width > 0 && height > 0)
         area = width * height;
-    }
     cout << area;
-
-    return 0;
 }
