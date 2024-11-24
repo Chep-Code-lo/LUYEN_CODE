@@ -1,16 +1,16 @@
 #include<iostream>
 using namespace std;
-int n, ans, a[1003], dp[1003];
+int limit, result, arry_1[1003], arry_1_2[1003];
 int main(){
-    cin >> n;
-    for(int i=1; i<=n; ++i) cin >> a[i];
-    dp[0] = 0;
-    for(int i=1; i<=n; ++i){
-        if(a[i] > 0)
-            dp[i] = max(dp[i-1], dp[i-1]+1);
-        else dp[i] = 0;
+    cin >> limit;
+    for(int i=1; i<=limit; ++i) cin >> arry_1[i];
+    arry_1_2[0] = 0;
+    for(int i=1; i<=limit; ++i){
+        if(arry_1[i] > 0)
+            arry_1_2[i] = max(arry_1_2[i-1], arry_1_2[i-1]+1);
+        else arry_1_2[i] = 0;
     }
-    for(int i=1; i<=n; ++i)
-        ans = max(ans, dp[i]);
-    cout << ans << "\n";
+    for(int i=1; i<=limit; ++i)
+        result = max(result, arry_1_2[i]);
+    cout << result << "\n";
 }

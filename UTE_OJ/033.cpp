@@ -1,13 +1,13 @@
 #include<iostream>
 using namespace std;
-int n, count, x = 1, a[1003], b[1003];
+int limit, count, index = 1, arry_1[1003], arry_2[1003];
 int main(){
-    cin >> n;
-    for(int i=1; i<=n; ++i) cin >> a[i];
-    for(int i=n; i>=1; --i)
-        b[x++] = a[i]; 
-    for(int i=1; i<=n; ++i)
-        if(a[i] != b[i]){
+    cin >> limit;
+    for(int i=1; i<=limit; ++i) cin >> arry_1[i];
+    for(int i=limit; i>=1; --i)
+        arry_2[index++] = arry_1[i]; 
+    for(int i=1; i<=limit; ++i)
+        if(arry_1[i] != arry_2[i]){
             count++;
             break;
         } 
