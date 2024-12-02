@@ -1,15 +1,15 @@
 #include<iostream>
+#include<algorithm>
 using namespace std;
-long long a, b;
-int main(){
-    cin >> a >> b;
-    while(a!=0 && b!=0){
-        if((a%10 + b%10) > 9 ){
-            cout << "Hard";
-            return 0;
-        }        
-        a/=10;
-        b/=10;
-    }
-    cout << "Easy";
+int n, m, a[2000000], b[2000000];
+long long d;
+int main() {
+    cin >> n >> m;
+    for(int i=0; i<n; ++i) cin >> a[i];
+    for(int i=0; i<m; ++i) cin >> b[i];
+    sort(a, a+n);
+    sort(b, b+m);
+    for(int i=0; i<n; ++i)
+        d += max(abs(a[i] - b[0]), abs(a[i] - b[m - 1]));
+    cout << d;
 }
