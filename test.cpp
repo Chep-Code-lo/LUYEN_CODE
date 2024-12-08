@@ -1,15 +1,13 @@
 #include<iostream>
-#include<algorithm>
+#include<math.h>
 using namespace std;
-int n, m, a[2000000], b[2000000];
-long long d;
-int main() {
-    cin >> n >> m;
+long long n, a[100000];
+long long current_sum, max_sum;
+int main(){
+    cin >> n;
     for(int i=0; i<n; ++i) cin >> a[i];
-    for(int i=0; i<m; ++i) cin >> b[i];
-    sort(a, a+n);
-    sort(b, b+m);
-    for(int i=0; i<n; ++i)
-        d += max(abs(a[i] - b[0]), abs(a[i] - b[m - 1]));
-    cout << d;
+    for(int i=0; i<n; ++i){
+        current_sum = max(a[i], current_sum + a[i]);
+        max_sum = max(max_sum, current_sum);
+    }
 }

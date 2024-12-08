@@ -55,7 +55,7 @@ void Euler_Sieve(){
 }
 
 // Kiểm tra snt dạng 6k -1 độ phức tạp O(√n/6)
-bool Is_Prime(ll x){
+bool Is_Prime(int x){
     if(x <= 1) return false;
     if(x <= 3) return true;
     if(x%2 == 0 || x%3 == 0) return false;
@@ -65,7 +65,7 @@ bool Is_Prime(ll x){
 }
 
 // Kiểm tra snt dạng thường độ phức tạp O(√n)
-bool is_prime(ll x){
+bool is_prime(int x){
     for(int i=2; i<=sqrt(x); i++)
         if(x%i == 0) return false;
     return x > 1;
@@ -87,8 +87,8 @@ ll Eulerr(ll n){
 }
 
 // Đếm số ước độ phức tạp O(√n)
-ll Count_Divisors(ll x){
-    ll cnt = 0;
+long long Count_Divisors(long long x){
+    long long cnt = 0;
     for(int i=1; i*i<=x; i++)
         if(x%i == 0){
             cnt++;
@@ -98,32 +98,65 @@ ll Count_Divisors(ll x){
 }
 
 // Tổng ước ko cộng chính nó độ phức tạp O(√n)
-ll Sum_Divisors(ll x){
-    ll sum = 1;
-    for(ll i=2; i*i<=x; i++)
+long long Sum_Divisors(long long x){
+    long long sum = 1;
+    for(long long i=2; i*i<=x; i++)
         if(x%i == 0){
             if(i*i != x) sum += i + x/i;
             else sum += i;// Tránh cộng 2 lần khi i*i = x
         }
-    return sum;
+    return sum; // Không cộng chính nó
+    return sum + x; // Cộng thêm chính nó
 }
 
 // Kiểm tra số chính phương độ phức tạp O(1)
-bool Square_Number(ll x){
+bool Square_Number(long long x){
     int res = sqrt(x);
     return(1ll*res*res == x);
 }
 
 //Kiểm tra số đối xứng độ phức tạp O(1)
-bool Symmetry_Number(ll x){
-    ll reverse = 0, temp = x;
+bool Symmetry_Number(long long x){
+    long long reverse = 0, temp = x;
     while(x){
         reverse = reverse*10 + x%10;
         x /= 10;
     }
     return reverse == temp;
 }
-
+long long sum_str(string s){
+    int digit;
+    long long sum = 0;
+    bool check = false;
+    for(int i=0; i<s.size(); ++i){
+        if(isdigit(s[i])){
+            digit = digit*10 + (s[i]-'0');
+            check = true;
+        }
+        else
+            if(check){
+                sum += digit;
+                digit = 0;
+            }  
+    }
+    return sum;
+}
+long long sum_str_1(string s){
+    long long sum = 0;
+    for(int i=0; i<s.size(); ++i)
+        if(isdigit(s[i]))
+            sum += (s[i] - '0');
+    return sum;
+}
+bool is_perfect_number(long long x){
+    long long sum = 1;
+    for(long long i=2; i*i<=x; i++)
+        if(x%i == 0){
+            if(i*i != x) sum += i + x/i;
+            else sum += i;// Tránh cộng 2 lần khi i*i = x
+        }
+    return sum == x;
+}
 // Lũy thừa nhị phân độ phức tạp O(logb)
 // Dùng tính chất lũy thừa chia nhỏ phép nhân 
 // b chẵn thì a^b = (a^(b/2))^2
@@ -177,6 +210,8 @@ vector<int> Analysis_Prime(ll x){
     if(x > 1) v.push_back(1);
     return v;
 }
-
+string s;
 int main(){
+    cin >> s;
+    cout << sum_str_1(s);
 }
