@@ -1,58 +1,47 @@
 #include <iostream>
 #include <vector>
-
 using namespace std;
-long long merge(vector<int>& arr, int left, int mid, int right) {
-    vector<int> leftArr(arr.begin() + left, arr.begin() + mid + 1);
-    vector<int> rightArr(arr.begin() + mid + 1, arr.begin() + right + 1);
-    int i = 0, j = 0, k = left;
+long long merge(int arr[], int left, int mid, int right){
+    vector<int> left_arr(arr+ left, arr + mid + 1);
+    vector<int> right_arr(arr + mid + 1, arr + right + 1);
+    int i = 0, j = 0;
     long long inv_count = 0;
-
-    while (i < leftArr.size() && j < rightArr.size()) {
-        if (leftArr[i] <= rightArr[j]) {
-            arr[k] = leftArr[i];
+    while(i < left_arr.size() && j < right_arr.size()){
+        if(left_arr[i] <= right_arr[j]){
+            arr[left] = left_arr[i];
             i++;
-        } else {
-            arr[k] = rightArr[j];
-            inv_count += leftArr.size() - i;
+        }else{
+            arr[left] = right_arr[j];
+            inv_count += left_arr.size() - i;
             j++;
         }
-        k++;
+        left++;
     }
-
-    while (i < leftArr.size()) {
-        arr[k] = leftArr[i];
+    while(i < left_arr.size()){
+        arr[left] = left_arr[i];
         i++;
-        k++;
+        left++;
     }
-
-    while (j < rightArr.size()) {
-        arr[k] = rightArr[j];
+    while(j < right_arr.size()){
+        arr[left] = right_arr[j];
         j++;
-        k++;
+        left++;
     }
-
     return inv_count;
 }
-
-long long mergeSort(vector<int>& arr, int left, int right) {
+long long mergeSort(int arr[], int left, int right){
     long long inv_count = 0;
     if (left < right) {
-        int mid = left + (right - left) / 2;
+        int mid = (left + right) / 2;
         inv_count += mergeSort(arr, left, mid);
         inv_count += mergeSort(arr, mid + 1, right);
         inv_count += merge(arr, left, mid, right);
     }
     return inv_count;
 }
-
+int n, arr[200005];
 int main() {
-    int n;
     cin >> n;
-    vector<int> arr(n);
-    for (int i = 0; i < n; i++) {
-        cin >> arr[i];
-    }
-    cout << mergeSort(arr, 0, n - 1) << endl;
-    return 0;
+    for(int i=0; i<n; ++i)  cin >> arr[i];
+    cout << mergeSort(arr, 0, n - 1);
 }
