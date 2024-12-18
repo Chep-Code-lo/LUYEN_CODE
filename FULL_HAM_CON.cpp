@@ -125,19 +125,16 @@ bool Symmetry_Number(long long x){
     return reverse == temp;
 }
 long long sum_str(string s){
-    int digit;
+    int digit = 0;
     long long sum = 0;
-    bool check = false;
     for(int i=0; i<s.size(); ++i){
-        if(isdigit(s[i])){
+        if(isdigit(s[i]))
             digit = digit*10 + (s[i]-'0');
-            check = true;
-        }
         else
-            if(check){
-                sum += digit;
-                digit = 0;
-            }  
+        {
+            sum += digit;
+            digit = 0;
+        }  
     }
     return sum;
 }
@@ -186,8 +183,8 @@ ll Bin_Pow_Mod(ll a, ll b, ll mod){
 }
 
 // Phân tích thừa số nguyên tố độ phức tạp O(√n)
-vector<int> Analysis_Prime(ll x){
-    ll cnt = 0;
+vector<int> Analysis_Prime(long long x){
+    long long cnt = 0;
     vector<int>v;
     while(x%2 == 0){
         cnt++;

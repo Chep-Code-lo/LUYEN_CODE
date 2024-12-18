@@ -3,7 +3,7 @@
 #define file_trau(name) freopen(name".inp","r",stdin); freopen(name".ans","w",stdout);
 using namespace std;
 const string NAME = "TASK";
-const int TEST = 1000;// Giới hạn sinh test
+const int TEST = 10000;// Giới hạn sinh test
 mt19937_64 rng(chrono::high_resolution_clock::now().time_since_epoch().count());
 long long Rand(long long l, long long r){
     return uniform_int_distribution<long long>(l, r)(rng);
@@ -36,11 +36,14 @@ int main(){
     for(int test=1; test<=TEST; ++test){
         ofstream inp((NAME + ".inp").c_str());
         // Code sinh
-        int a = Rand(1, 100);
-        int b = Rand(1, 100);
-        int c = Rand(1, 100);
-        int d = Rand(1, 100);
-        inp << a << " " << b << " " << c << " " << d; 
+        int n = Rand(1, 1000);
+        int m = Rand(1, 1000);
+        inp << n << " " << m << "\n";
+        for(int i=0; i<n; ++i){
+            for(int j=0; j<m; ++j)
+                inp << Rand(-1e9, 1e9) << " ";
+            inp << "\n";
+        }
         inp.close();
         system((NAME +".exe").c_str());
         system((NAME +"_trau.exe").c_str());
