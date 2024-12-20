@@ -1,14 +1,13 @@
-#include<bits/stdc++.h>
-#define file_chuan(name) freopen(name".inp","r",stdin); freopen(name".out","w",stdout);
-#define file_trau(name) freopen(name".inp","r",stdin); freopen(name".ans","w",stdout);
+#include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
-int n, x, t=1;
-long long s;
+long long ans, x;
 int main(){
-    cin >> n >> x;
-    for(int i=1; i<=n; ++i){
-        t = pow(x, 2*i - 1);
-        s += t;
-    }
-    cout << s;
+    cin >> x;
+    ans += x/3;
+    x = x%3;
+    ans += x/2;
+    ans += x*2;
+    cout << ans;
 }

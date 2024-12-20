@@ -36,14 +36,8 @@ int main(){
     for(int test=1; test<=TEST; ++test){
         ofstream inp((NAME + ".inp").c_str());
         // Code sinh
-        int n = Rand(1, 1000);
-        int m = Rand(1, 1000);
-        inp << n << " " << m << "\n";
-        for(int i=0; i<n; ++i){
-            for(int j=0; j<m; ++j)
-                inp << Rand(-1e9, 1e9) << " ";
-            inp << "\n";
-        }
+        long long n = Rand(-1e18, 1e18);
+        inp << n ;
         inp.close();
         system((NAME +".exe").c_str());
         system((NAME +"_trau.exe").c_str());

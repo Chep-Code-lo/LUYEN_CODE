@@ -5,38 +5,17 @@
 using namespace std;
 
 long long A[1000][1000];
-long long max_in_matrix = LLONG_MIN; 
+long long x, step_2, step_3; 
 int main() {
     file_trau("TASK");
-    int N, M;
-    cin >> N >> M;
-
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < M; j++) {
-            cin >> A[i][j];
-            max_in_matrix = max(max_in_matrix, A[i][j]);
-        }
+    cin >> x;
+    x = abs(x);
+    while(step_3*3 <= x){
+        step_3++;
     }
-
-    int special_count = 0; 
-    
- 
-    for (int i = 0; i < N; i++) {
-        long long max_in_row = LLONG_MIN; 
-        
-     
-        for (int j = 0; j < M; j++) {
-            max_in_row = max(max_in_row, A[i][j]);
-        }
-
-        
-        for (int j = 0; j < M; j++) {
-            if (A[i][j] == max_in_row && A[i][j] < max_in_matrix) {
-                special_count++; 
-            }
-        }
+    x -= step_3*3;
+    while (step_2*2 <= x){
+        step_2++;
     }
-
-    cout << special_count;
-    return 0;
+    cout << step_2+step_3;
 }
