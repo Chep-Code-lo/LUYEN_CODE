@@ -1,14 +1,12 @@
 #include<iostream>
 #include<algorithm>
 #include<vector>
-#define file_chuan(name) freopen(name".INP","r",stdin); freopen(name".OUT","w",stdout);
 using namespace std;
 int n;
 long long m, pos_start, pos_end, sum_dis, ans;
 vector<pair<long long, long long>> cur;
 vector<pair<long long, long long>> add;
 int main(){
-    //file_chuan("VILLAGES");
     cin >> n >> m;
     for(int i=0; i<n; ++i){
         long long st, end; cin >> st >> end;
