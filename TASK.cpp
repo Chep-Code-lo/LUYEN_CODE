@@ -6,22 +6,13 @@ using namespace std;
 int n, m, maxx = -1e10, cnt, a[1003][1003];
 long long x;
 signed main(){
-    //file_chuan("TASK");
+    file_chuan("TASK");
     cin >> x;
     x = abs(x);
-    long long steps_3 = x / 3;
-    long long remainder = x % 3;
-    long long steps_2 = 0;
-    if(remainder == 1){
-        if(steps_3 >= 1){
-            steps_3 -= 1;
-            steps_2 = 2;
-        } else {
-            steps_3 = 0;
-            steps_2 = 1;
-        }
+    if(x == 1){
+        cout << 2;
+        return 0;
     }
-    else if(remainder == 2)
-        steps_2 = 1;
-    cout << steps_2 + steps_3;
+    else
+        cout << (x+2)/3;
 }

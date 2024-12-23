@@ -10,12 +10,23 @@ int main() {
     file_trau("TASK");
     cin >> x;
     x = abs(x);
-    while(step_3*3 <= x){
-        step_3++;
+    if(x == 1){
+        cout << 2;
+        return 0;
     }
-    x -= step_3*3;
-    while (step_2*2 <= x){
-        step_2++;
+    long long steps_3 = x / 3;
+    long long remainder = x % 3;
+    long long steps_2 = 0;
+    if(remainder == 1){
+        if(steps_3 >= 1){
+            steps_3 -= 1;
+            steps_2 = 2;
+        } else {
+            steps_3 = 0;
+            steps_2 = 1;
+        }
     }
-    cout << step_2+step_3;
+    else if(remainder == 2)
+        steps_2 = 1;
+    cout << steps_2 + steps_3;
 }
