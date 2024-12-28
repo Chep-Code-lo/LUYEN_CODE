@@ -78,3 +78,30 @@ double ssqrt(double x,double y,double xx,double yy){double res=sqrt(psqrt(x,y,xx
 ll INV(ll x){return qpow(x,Z-2,Z);}
 void cominit(ll fac[],ll inv[]){fac[0]=1;rep(i,1,1000000)fac[i]=fac[i-1]*i%Z;
 inv[1000000]=INV(fac[1000000]);per(i,1000000-1,0)inv[i]=inv[i+1]*(i+1)%Z;}
+int t;
+int check(string s){
+    for(int i=0; i<s.size()/2; ++i)
+        if(s[i] != s[s.size() - i - 1]) return false;
+    return true;
+}
+int main(){
+    faster
+    cin >> t;
+    while(t--){
+        int ans=0;
+        string s; cin >> s;
+        if(!check(s)) ans = s.size();
+        else if(s.size() > 1){
+            s.pop_back();
+            if(!check(s)) ans = s.size();
+            else ans = -1;
+        }
+        else ans = -1;
+        cout << ans << "\n";
+    }
+}
+/*4
+abacaba
+aaa
+codeforcesecrofedoc
+lol*/

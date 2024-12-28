@@ -78,3 +78,29 @@ double ssqrt(double x,double y,double xx,double yy){double res=sqrt(psqrt(x,y,xx
 ll INV(ll x){return qpow(x,Z-2,Z);}
 void cominit(ll fac[],ll inv[]){fac[0]=1;rep(i,1,1000000)fac[i]=fac[i-1]*i%Z;
 inv[1000000]=INV(fac[1000000]);per(i,1000000-1,0)inv[i]=inv[i+1]*(i+1)%Z;}
+int m, n, a[501][501];
+long long max_sum;
+int directions[8][2] = {{-2, -1}, {-1, -2}, {1, -2}, {2, -1}, {2, 1}, {1, 2}, {-1, 2}, {-2, 1}};
+int main(){
+    cin >> m >> n;
+    for(int i=0; i<m; ++i)
+        for(int j=0; j<n; ++j)  cin >> a[i][j];
+    for(int i=0; i<m; ++i)
+        for(int j=0; j<n; ++j){
+            long long current_sum = a[i][j];
+            for(int k=0; k<8; ++k){
+                int ni = i+directions[k][0];
+                int nj= j+directions[k][1];
+                if(ni>=0 && ni<=m && nj>=0 && nj<=n)
+                    current_sum += a[ni][nj];
+            }
+            max_sum = max(max_sum, current_sum);
+        }
+    cout << max_sum;
+}
+/*5 6
+1 2 1 4 3 2
+5 4 2 4 5 2
+2 2 3 1 4 1
+2 4 2 4 2 3
+5 2 1 3 5 1*/

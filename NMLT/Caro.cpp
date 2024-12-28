@@ -78,3 +78,46 @@ double ssqrt(double x,double y,double xx,double yy){double res=sqrt(psqrt(x,y,xx
 ll INV(ll x){return qpow(x,Z-2,Z);}
 void cominit(ll fac[],ll inv[]){fac[0]=1;rep(i,1,1000000)fac[i]=fac[i-1]*i%Z;
 inv[1000000]=INV(fac[1000000]);per(i,1000000-1,0)inv[i]=inv[i+1]*(i+1)%Z;}
+int m, n, len;
+long long dev, ucode;
+vector<string>s(501);
+int core(string s, char play){
+    int score=0, count=0;
+    for(char x : s){
+        if(x == play)
+            count++;
+        else{
+            if(count >= 4)
+                score += (count - 3);
+            count=0;
+        }    
+    }
+    if(count >= 4)
+        score += (count - 3);
+    return score;
+}
+int main(){
+    cin >> m >> n;
+    for(int i=0; i<m; ++i)  cin >> s[i];
+    for(int i=0; i<m; ++i){
+        dev += core(s[i], 'X');
+        ucode += core(s[i], 'O');
+    }
+    for(int j=0; j<n; ++j){
+        string column;
+        for(int i=0; i<m; ++i)
+            column += s[i][j];
+        dev += core(column, 'X');
+        ucode += core(column, 'O');
+    }
+    cout << dev << " " << ucode;
+}
+/*8 10
+----------
+-X-O-O----
+-XXXXXO---
+-XOXOX----
+-X-OOX----
+-X--OX----
+---XOOOOO-
+----OO----*/
