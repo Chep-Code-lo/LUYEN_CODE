@@ -1,18 +1,17 @@
-#include<iostream>
-#include<algorithm>
+#include <iostream>
+#define int long long
 #define file_chuan(name) freopen(name".inp","r",stdin); freopen(name".out","w",stdout);
-#define file_trau(name) freopen(name".inp","r",stdin); freopen(name".ans","w",stdout);
+#define file_trau(name) freopen(name".inp","r",stdin); freopen(name".ans","w",stdout); 
 using namespace std;
-int n, m, maxx = -1e10, cnt, a[1003][1003];
-long long x;
+const int N = 1e5+1;
+int n, sum_avg, operations_floor, operations_ceil, a[N];
 signed main(){
-    file_chuan("TASK");
-    cin >> x;
-    x = abs(x);
-    if(x == 1){
-        cout << 2;
-        return 0;
-    }
-    else
-        cout << (x+2)/3;
+    file_chuan("TASK")
+    cin >> n;
+    for(int i=0; i<n; ++i)  cin >> a[i], sum_avg += a[i];
+    int sum_avg_floor = sum_avg / n;
+    int sum_avg_ceil = (sum_avg + n - 1) / n;
+    for(int i=0; i<n; ++i)  operations_floor += abs(a[i] - sum_avg_floor);
+    for(int i=0; i<n; ++i)  operations_ceil += abs(a[i] - sum_avg_ceil);
+    cout << min(operations_floor, operations_ceil);
 }

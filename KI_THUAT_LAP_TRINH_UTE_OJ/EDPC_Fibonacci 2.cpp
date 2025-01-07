@@ -10,6 +10,7 @@
 //#define endl '\n'
 #define pb push_back
 #define ll long long
+#define llt long long int
 #define pll pair<ll,ll>
 #define no cout<<"NO"<<'\n'
 #define no_ cout<<"No"<<'\n'
@@ -25,8 +26,7 @@
 #define debug(x) cout<<#x<<"="<<x<<endl
 #define rep(i,a,b) for(ll i=(a);i<=(b);i++)
 #define per(i,a,b) for(ll i=(a);i>=(b);i--)
-#define file_chuan(name) freopen(name".inp","r",stdin); freopen(name".out","w",stdout);
-#define file_trau(name) freopen(name".inp","r",stdin); freopen(name".ans","w",stdout);
+#define file(name) freopen(name".INP","r",stdin); freopen(name".OUT","w",stdout);
 #define faster ios_base:: sync_with_stdio(0); cin.tie(0); cout.tie(0);
 #define N int(1e7)
 #define M int(3e6+3)
@@ -71,7 +71,39 @@ struct mint
     bool operator !=(const mint &ope){return x != ope.x;}
     bool operator <(const mint &ope)const{return x < ope.x;}
 };
-
+struct matrix {
+    ll mat[2][2];
+    matrix friend operator *(const matrix &a, const matrix &b){
+        matrix c;
+        for(int i=0; i<2; ++i)
+            for(int j=0; j<2; ++j){
+                c.mat[i][j] = 0;
+                for(int k=0; k<2; ++k)
+                    c.mat[i][j] = (c.mat[i][j] + (a.mat[i][k] * b.mat[k][j])%mod1 )%mod1;               
+            }
+        return c;
+    }
+};
+matrix matpow(matrix base, ll n){
+    matrix ans{ {
+      {1, 0},
+      {0, 1}
+    } };
+    while(n){
+        if(n&1)
+            ans = ans*base;
+        base = base*base;
+        n >>= 1;
+    }
+    return ans;
+}
+ll fib(ll n){
+    matrix base{ {
+      {1, 1},
+      {1, 0}
+    } };
+    return matpow(base, n).mat[0][1];
+}
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 ll gcd(ll a,ll b){return __gcd(a,b);}
 ll lcm(ll a,ll b){return a*b/__gcd(a,b);}
@@ -83,115 +115,9 @@ double ssqrt(double x,double y,double xx,double yy){double res=sqrt(psqrt(x,y,xx
 ll INV(ll x){return qpow(x,Z-2,Z);}
 void cominit(ll fac[],ll inv[]){fac[0]=1;rep(i,1,1000000)fac[i]=fac[i-1]*i%Z;
 inv[1000000]=INV(fac[1000000]);per(i,1000000-1,0)inv[i]=inv[i+1]*(i+1)%Z;}
-bigInt& fix(bigInt &a){
-  a.push_back(0);
-  for (int i = 0; i + 1 < a.size(); ++i){
-    a[i + 1] += a[i] / BASE; a[i] %= BASE;
-    if (a[i] < 0) a[i] += BASE, --a[i + 1];
-  }
-  while (a.size() > 1 && a.back() == 0) a.pop_back();
-  return a;
-}
-bigInt big(int x){
-  bigInt result;
-  while (x > 0) {
-    result.push_back(x % BASE);
-    x /= BASE;
-  }
-  return result;
-}
-bigInt big(string s){
-  bigInt result(s.size() / LENGTH + 1);
-  for (int i = 0; i < s.size(); ++i) {
-    int pos = (s.size() - i - 1) / LENGTH;
-    result[pos] = result[pos] * 10 + s[i] - '0';
-  }
-  return fix(result), result;
-}
-int compare(bigInt &a, bigInt &b){
-  if (a.size() != b.size()) return (int)a.size() - (int)b.size();
-  for (int i = 0; i < a.size(); ++i)
-    if (a[i] != b[i]) return a[i] - b[i];
-  return 0;
-}
-#define DEFINE_OPERATOR(x) bool operator x (bigInt &a, bigInt &b) { return compare(a, b) x 0; }
-DEFINE_OPERATOR(==)
-DEFINE_OPERATOR(!=)
-DEFINE_OPERATOR(>)
-DEFINE_OPERATOR(<)
-DEFINE_OPERATOR(>=)
-DEFINE_OPERATOR(<=)
-#undef DEFINE_OPERATOR
-void operator += (bigInt &a, bigInt b){
-  a.resize(max(a.size(), b.size()));
-  for (int i = 0; i < b.size(); ++i)
-    a[i] += b[i];
-  fix(a);
-}
-void operator -= (bigInt &a, bigInt b){
-  for (int i = 0; i < b.size(); ++i)
-    a[i] -= b[i];
-  fix(a);
-}
-void operator *= (bigInt &a, int b){
-  for (int i = 0; i < a.size(); ++i)
-    a[i] *= b;
-  fix(a);
-}
-void divide(bigInt a, int b, bigInt &q, int &r){
-  for (int i = int(a.size()) - 1; i >= 0; --i) {
-    r = r * BASE + a[i];
-    q.push_back(r / b); r %= b;
-  }
-  reverse(q.begin(), q.end());
-  fix(q);
-}
-bigInt operator + (bigInt a, bigInt b) { a += b; return a; }
-bigInt operator - (bigInt a, bigInt b) { a -= b; return a; }
-bigInt operator * (bigInt a, int b) { a *= b; return a; }
-bigInt operator / (bigInt a, int b){
-  bigInt q; int r = 0;
-  divide(a, b, q, r);
-  return q;
-}
-int operator % (bigInt a, long b){
-  bigInt q; int r = 0;
-  divide(a, b, q, r);
-  return r;
-}
-bigInt operator * (bigInt a, bigInt b){
-  bigInt result (a.size() + b.size());
-  for (int i = 0; i < a.size(); ++i)
-    for (int j = 0; j < b.size(); ++j)
-      result[i + j] += a[i] * b[j];
-  return fix(result);
-}
-istream& operator >> (istream& cin, bigInt &a){
-  string s; cin >> s;
-  a = big(s);
-  return cin;
-}
-ostream& operator << (ostream& cout, const bigInt &a){
-  cout << a.back();
-  for (int i = (int)a.size() - 2; i >= 0; --i)
-    cout << setw(LENGTH) << setfill('0') << a[i];
-  return cout;
-}
-bigInt fibonacci(int n){
-    bigInt f0 = big("0"), f1 = big("1");
-    if(n == 0) return  f0;
-    if(n == 1) return f1;
-    for(int i=2; i<=n; ++i){
-        bigInt fn = f0 + f1;
-        f0 = f1;
-        f1 = fn;
-    }
-    return f1;
-}
+ll n;
 int main(){
-    //file_chuan("TASK")
-    int n;
+    faster
     cin >> n;
-    bigInt result = fibonacci(n);
-    cout << result;
+    cout << fib(n);
 }

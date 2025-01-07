@@ -25,8 +25,7 @@
 #define debug(x) cout<<#x<<"="<<x<<endl
 #define rep(i,a,b) for(ll i=(a);i<=(b);i++)
 #define per(i,a,b) for(ll i=(a);i>=(b);i--)
-#define file_chuan(name) freopen(name".inp","r",stdin); freopen(name".out","w",stdout);
-#define file_trau(name) freopen(name".inp","r",stdin); freopen(name".ans","w",stdout);
+#define file(name) freopen(name".INP","r",stdin); freopen(name".OUT","w",stdout);
 #define faster ios_base:: sync_with_stdio(0); cin.tie(0); cout.tie(0);
 #define N int(1e7)
 #define M int(3e6+3)
@@ -176,22 +175,4 @@ ostream& operator << (ostream& cout, const bigInt &a){
   for (int i = (int)a.size() - 2; i >= 0; --i)
     cout << setw(LENGTH) << setfill('0') << a[i];
   return cout;
-}
-bigInt fibonacci(int n){
-    bigInt f0 = big("0"), f1 = big("1");
-    if(n == 0) return  f0;
-    if(n == 1) return f1;
-    for(int i=2; i<=n; ++i){
-        bigInt fn = f0 + f1;
-        f0 = f1;
-        f1 = fn;
-    }
-    return f1;
-}
-int main(){
-    //file_chuan("TASK")
-    int n;
-    cin >> n;
-    bigInt result = fibonacci(n);
-    cout << result;
 }
