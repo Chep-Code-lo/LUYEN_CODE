@@ -1,45 +1,57 @@
-#include <iostream>
-#include <vector>
-#include <cmath>
-#include <algorithm>
+#include<bits/stdc++.h>
+#define ll long long
 #define file_chuan(name) freopen(name".inp","r",stdin); freopen(name".out","w",stdout);
-#define file_trau(name) freopen(name".inp","r",stdin); freopen(name".ans","w",stdout); 
+#define file_trau(name) freopen(name".inp","r",stdin); freopen(name".ans","w",stdout);
 using namespace std;
-
-long long min_operations(vector<long long>& a) {
-    long long sum = 0;
-    int n = a.size();
-    
-    for (int num : a) {
-        sum += num;
+const ll N=5e5+5,M=1e9+7,O=1e6;
+ll n,m,a[N],res,f[N],b[N],p[O+10];
+void sang()
+{
+    p[0]=1;
+    p[1]=1;
+    for (int i=2;i<=sqrt(O);i++)
+    {
+        if (p[i]==0)
+        {
+            for (int j=i*i;j<=O;j+=i)
+            p[j]=1;
+        }
     }
-    
-    long long avg_floor = sum / n;
-    long long avg_ceil = (sum + n - 1) / n;
-
-    long long operations_floor = 0;
-    for (int num : a) {
-        operations_floor += abs(num - avg_floor);
-    }
-
-    long long operations_ceil = 0;
-    for (int num : a) {
-        operations_ceil += abs(num - avg_ceil);
-    }
-
-    return min(operations_floor, operations_ceil);
 }
-
-int main() {
-    file_trau("TASK")
-    int n;
-    cin >> n;
-    vector<long long> a(n);
-    
-    for (int i = 0; i < n; ++i) {
-        cin >> a[i];
+ll chat(int l,int r,int x)
+{
+    int h=0;
+    while (l<=r)
+    {
+        int mid=(l+r)/2;
+        if (a[b[mid]]<=x) h=mid,l=mid+1;
+        else
+            r=mid-1;
     }
-    
-    cout << min_operations(a);
-    return 0;
+    return b[h];
+}
+void nhap()
+{
+    cin>>n;
+    sang();
+    for (int i=1;i<=n;i++)
+    {
+        int x;
+        cin>>x;
+        if (p[x]==0) a[++m]=x;
+    }
+    f[1]=1; b[1]=1; int r=1;
+    for (int i=2;i<=m;i++)
+    {
+        ll t=chat(1,f[r],a[i]);
+        f[i]=f[t]+1;
+        b[f[i]]=i;
+        if (f[i]>f[r]) r=i;
+    }
+    cout<<f[r];
+}
+int main(){
+    file_trau("TASK")
+  nhap();
+
 }

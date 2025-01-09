@@ -38,10 +38,11 @@ int main(){
         ofstream inp((NAME + ".inp").c_str());
         // Code sinh
         long long n = Rand(1, 1e5);
+        long long k = Rand(1, 100);
         //string s = random_string(n);
-        inp << n;
+        inp << n ;
         for(int i=0; i<n; ++i){
-            long long x = Rand(-1e9, 1e9);
+            long long x = Rand(-1e6, 1e6);
             inp << x << " ";
         }
         inp.close();

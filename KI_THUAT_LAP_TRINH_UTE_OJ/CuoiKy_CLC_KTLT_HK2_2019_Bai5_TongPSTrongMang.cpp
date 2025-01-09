@@ -1,5 +1,3 @@
-// Author : Chép Code Lỏ
-// Github : @Chep-Code-lo
 #include<bits/stdc++.h>
 using namespace std;
 const int base = 1e9;
@@ -243,9 +241,28 @@ struct bigint{
         return res;
     }
 };
-int n, k;
+int n;
+string fraction_sum1 = "0", denominator_lcm1 = "1";
+bigint fraction_sum(fraction_sum1), denominator_lcm(denominator_lcm1);
 int main(){
-    //file_chuan("TASK")
-    return 0;
-    
+    cin >> n;
+    for(int i=0; i<n; ++i){
+        string A, B;
+        cin >> A >> B;
+        bigint a(A), b(B);
+        fraction_sum = fraction_sum * b + a * denominator_lcm;
+        denominator_lcm = denominator_lcm * b;
+    }
+    //cout << fraction_sum << " " << denominator_lcm;
+    bigint gcd_value = gcd(fraction_sum, denominator_lcm);
+    //cout << gcd_value;
+    fraction_sum = fraction_sum / gcd_value;
+    denominator_lcm = denominator_lcm / gcd_value;
+    cout << fraction_sum << " " << denominator_lcm;
 }
+/*4
+3 9
+4 6
+10 12
+5 7
+*/
