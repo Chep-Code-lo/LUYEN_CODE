@@ -60,6 +60,7 @@ struct bigint{
         res *= v;
         return res;
     }
+    void operator*=(const bigint &v) {*this = *this*v;}
     friend pair<bigint, bigint>divmod(const bigint &a1, const bigint &b1){
         int norm = base/(b1.a.back() + 1);
         bigint q, r, a=a1.abs()*norm, b=b1.abs()*norm;
@@ -81,6 +82,13 @@ struct bigint{
     }
     bigint operator/(const bigint &v) const{return divmod(*this, v).first;}
     bigint operator%(const bigint &v) const{return divmod(*this, v).second;}
+    bigint operator/(int v) const{bigint res = *this; res /=v; return res;}
+    int operator%(int v) const{
+        if(v<0) v = -v;
+        int m=0;
+        for(int i=a.size()-1; i>=0; --i)	m = (a[i] + m*(long long)base)%v;
+        return m*sign;
+    }
     void operator/=(int v){
         if(v<0) sign=-sign, v=-v;
         for(int i=(int)a.size()-1, rem=0; i>=0; --i){
@@ -89,16 +97,8 @@ struct bigint{
         }
         trim();
     }
-    bigint operator/(int v) const{bigint res = *this; res /=v; return res;}
-    int operator%(int v) const{
-        if(v<0) v = -v;
-        int m=0;
-        for(int i=a.size()-1; i>=0; --i)	m = (a[i] + m*(long long)base)%v;
-        return m*sign;
-    }
     void operator+=(const bigint &v) {*this = *this+v;}
     void operator-=(const bigint &v) {*this = *this-v;}
-    void operator*=(const bigint &v) {*this = *this*v;}
     void operator/=(const bigint &v) {*this = *this/v;}
     bool operator<(const bigint &v) const{
         if(sign != v.sign)	return sign<v.sign;
@@ -116,7 +116,6 @@ struct bigint{
         while(!a.empty() && !a.back())	a.pop_back();
         if(a.empty())	sign=1;
     }
-    bool isZero() const{return a.empty() || (a.size() == 1 && !a[0]);}
     bigint operator-() const{
         bigint res = *this;
         res.sign = -sign;
@@ -127,11 +126,13 @@ struct bigint{
         res.sign *= res.sign;
         return res;
     }
+    //Chuyển bigint sang long long
     long long longValue() const{
         long long res=0;
         for(int i=a.size()-1; i>=0; i--)	res = res*base + a[i];
         return res*sign;
     }
+    bool isZero() const{return a.empty() || (a.size() == 1 && !a[0]);}
     friend bigint gcd(const bigint &a, const bigint &b){return b.isZero() ? a : gcd(b, a%b);}
     friend bigint lcm(const bigint &a, const bigint &b){return a/gcd(a, b)*b;}
     void read(const string &s){
@@ -183,7 +184,7 @@ struct bigint{
         res.push_back((int)cur);
         while(!res.empty() && !res.back())
             res.pop_back();
-    return res;
+        return res;
     }
     typedef vector<long long> vll;
     static vll karatsubaMultiply(const vll &a, const vll &b){
@@ -202,21 +203,14 @@ struct bigint{
         vll b2(b.begin() + k, b.end());
         vll a1b1 = karatsubaMultiply(a1, b1);
         vll a2b2 = karatsubaMultiply(a2, b2);
-        for (int i = 0; i < k; i++)
-            a2[i] += a1[i];
-        for (int i = 0; i < k; i++)
-            b2[i] += b1[i];
+        for (int i = 0; i < k; i++)    a2[i] += a1[i];
+        for (int i = 0; i < k; i++)    b2[i] += b1[i];
         vll r = karatsubaMultiply(a2, b2);
-        for (int i = 0; i < (int) a1b1.size(); i++)
-            r[i] -= a1b1[i];
-        for (int i = 0; i < (int) a2b2.size(); i++)
-            r[i] -= a2b2[i];
-        for (int i = 0; i < (int) r.size(); i++)
-            res[i + k] += r[i];
-        for (int i = 0; i < (int) a1b1.size(); i++)
-            res[i] += a1b1[i];
-        for (int i = 0; i < (int) a2b2.size(); i++)
-            res[i + n] += a2b2[i];
+        for (int i = 0; i < (int) a1b1.size(); i++)    r[i] -= a1b1[i];
+        for (int i = 0; i < (int) a2b2.size(); i++)    r[i] -= a2b2[i];
+        for (int i = 0; i < (int) r.size(); i++)    res[i + k] += r[i];
+        for (int i = 0; i < (int) a1b1.size(); i++)   res[i] += a1b1[i];
+        for (int i = 0; i < (int) a2b2.size(); i++)    res[i + n] += a2b2[i];
         return res;
     }
     bigint operator*(const bigint &v) const{
@@ -224,12 +218,9 @@ struct bigint{
         vector<int> b6 = convert_base(v.a, base_digits, 6);
         vll a(a6.begin(), a6.end());
         vll b(b6.begin(), b6.end());
-        while (a.size() < b.size())
-            a.push_back(0);
-        while (b.size() < a.size())
-            b.push_back(0);
-        while (a.size() & (a.size() - 1))
-            a.push_back(0), b.push_back(0);
+        while (a.size() < b.size())    a.push_back(0);
+        while (b.size() < a.size())    b.push_back(0);
+        while (a.size() & (a.size() - 1))    a.push_back(0), b.push_back(0);
         vll c = karatsubaMultiply(a, b);
         bigint res;
         res.sign = sign * v.sign;
@@ -245,7 +236,12 @@ struct bigint{
 };
 int n, k;
 int main(){
-    //file_chuan("TASK")
+    //Một số mẫu
+    bigint a, b;
+    bigint a=1;
+    long long a = a.longValue();
+    bigint res = lcm(a, b);
+    bigint res = gcd(a, b);
     return 0;
     
 }
