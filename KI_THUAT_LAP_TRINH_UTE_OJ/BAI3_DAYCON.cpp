@@ -7,7 +7,7 @@
 #define faster ios_base:: sync_with_stdio(0); cin.tie(0); cout.tie(0);
 using namespace std;
 const int M = 1e6;
-int n, ans = 1, prime[M+1];
+int n, ans, prime[M+1];
 vector<int>dp(M, 1e6);
 vector<int>add;
 void Eratosthenes_Sieve(){
@@ -35,7 +35,6 @@ void solve(){
     cout << ans << "\n";
 }
 int main(){
-    file_trau("TASK");
     faster
     Eratosthenes_Sieve();
     input();

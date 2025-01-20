@@ -1,43 +1,34 @@
 #include<iostream>
 #include<vector>
 #include<algorithm>
-#define naxi(x, y, z) nax(x, nax(y, z))
+#include<math.h>
+#define file(name) freopen(name".inp","r",stdin); freopen(name".txt","w",stdout);
+#define file_trau(name) freopen(name".inp","r",stdin); freopen(name".ans","w",stdout);
+#define faster ios_base:: sync_with_stdio(0); cin.tie(0); cout.tie(0);
 using namespace std;
-int n;
-long long res = -1e10, f[1005][1005], a[1005][1005], trace[1005][1005];
-int main() {
+const int M = 1e6;
+int n, ans = 1, prime[M+1];
+vector<int>dp(M, 1e6);
+vector<int>add;
+void Eratosthenes_Sieve(){
+    for(int i=1; i<=M; ++i) prime[i] = 1;
+    prime[0] = prime[1] = 0;
+    for(int i=2; i<=sqrt(M); ++i)
+        if(prime[i])
+            for(int j=i*i; j<=M; j+=i)
+                prime[j] = 0;
+}
+void input(){
+    Eratosthenes_Sieve();
     cin >> n;
-    for(int i=1; i<=n; ++i)
-        for(int j=1; j<=n; ++j) cin >> a[i][j];
-    for(int i=0; i<=n; ++i) f[0][i] = f[n+1][i] = -1e15;
-    for(int j=1; j<=n; ++j){
-        for(int i=1; i<=n; ++i){
-            if(f[i-1][j-1] >= f[i][j-1] && f[i-1][j-1] >= f[i+1][j-1]){
-                f[i][j] = f[i-1][j-1] + a[i][j];
-                trace[i][j] = i-1;
-            }else if (f[i][j-1] >= f[i+1][j-1]){
-                f[i][j] = f[i][j-1] + a[i][j];
-                trace[i][j] = i;
-            }else{
-                f[i][j] = f[i+1][j-1] + a[i][j];
-                trace[i][j] = i+1;
-            }
-        }
+    for(int x, i=0; i<n; ++i){
+        cin >> x;
+        if(prime[x]) add.push_back(x);
     }
-    int best_row = 1;
-    for(int i=1; i<=n; ++i){
-        if(f[i][n] > res){
-            res = f[i][n];
-            best_row = i;
-        }
-    }
-    vector<int>ans;
-    int current_row = best_row;
-    for(int j=n; j>=1; j--){
-        ans.push_back(a[current_row][j]);
-        current_row = trace[current_row][j];
-    }
-    reverse(ans.begin(), ans.end());
-    cout << res << "\n";
-    //for(int x : ans)   cout << x << " ";
+    for(auto x : add)   cout << x << " ";
+}
+int main(){
+    file("TASK");
+    input();
+    
 }

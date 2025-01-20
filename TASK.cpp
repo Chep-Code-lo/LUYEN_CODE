@@ -1,110 +1,49 @@
-// Author : Chép Code Lỏ
-// Codeforces : @phamanh24042006
-// Github : @Chep-Code-lo
-
-
-#pragma GCC optimize("fast-math,O3")
-#pragma GCC optimize("no-stack-protector") 
-#pragma GCC optimize("unroll-loops")
-//#pragma GCC optimize("Ofast")
-//#pragma GCC target("tune=native")
-//#pragma GCC target("avx,avx2,fma")
-
-#include <bits/stdc++.h>
-#include <algorithm>
-#include <math.h>
-#include <vector>
-#include <string>
-#include <unordered_set>
-#include <unordered_map>
-// #include <queue>
-// #include <deque>
-// #include <bitset>
-// #include <stack>
-#include <iomanip>
-#define ll long long
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<math.h>
 #define file_chuan(name) freopen(name".inp","r",stdin); freopen(name".out","w",stdout);
 #define file_trau(name) freopen(name".inp","r",stdin); freopen(name".ans","w",stdout);
+#define faster ios_base:: sync_with_stdio(0); cin.tie(0); cout.tie(0);
 using namespace std;
-
-const ll MOD = 1e9 + 7;
-const ll INF = 1e9;
-const ll MAXVAL = 1e6 + 500;
-
-inline string multiply(string a, long long b) {
-    string result = "";
-    long long carry = 0;
-    for (int i = a.size() - 1; i >= 0; i--) {
-        long long product = (a[i] - '0') * b + carry;
-        result = char(product % 10 + '0') + result;
-        carry = product / 10;
-    }
-    while (carry) {
-        result = char(carry % 10 + '0') + result;
-        carry /= 10;
-    }
-    return result;
+const int M = 1e6;
+const int N = 5e5;
+int n, m, a[N], b[N], dp[N], prime[M+10];
+void Eratosthenes_Sieve(){
+    for(int i=1; i<=M; ++i) prime[i] = 1;
+    prime[0] = prime[1] = 0;
+    for(int i=2; i<=sqrt(M); ++i)
+        if(prime[i])
+            for(int j=i*i; j<=M; j+=i)
+                prime[j] = 0;
 }
-
-inline string power(string base, int exp) {
-    string result = "1";
-    for (int i = 0; i < exp; i++) {
-        result = multiply(result, stoll(base));
+int binary(int l, int r, int x){
+    int res=0;
+    while(l <= r){
+        int mid=(l+r)/2;
+        if(a[b[mid]] <= x) res=mid, l=mid+1;
+        else r=mid-1;
     }
-    return result;
+    return b[res];
 }
-
-inline int compare(string a, string b) {
-    if (a.size() < b.size()) return -1;
-    if (a.size() > b.size()) return 1;
-    return a.compare(b);
-}
-
-inline string cubeRoot(string n) {
-    string low = "0", high = n, ans;
-
-    while (compare(low, high) <= 0) {
-        string mid = to_string((stoll(low) + stoll(high)) / 2);
-        string midCubed = power(mid, 3);
-
-        if (compare(midCubed, n) <= 0) {
-            ans = mid;
-            low = to_string(stoll(mid) + 1);
-        } else {
-            high = to_string(stoll(mid) - 1);
-        }
-    }
-    long double prelow = stold(ans);
-    long double prehigh = prelow + 1.0;
-    long double preresult = prelow;
-
-    while (prehigh - prelow > 1e-11) {
-        long double mid = (prelow + prehigh) / 2.0;
-        long double midCubed = mid * mid * mid;
-
-        if (midCubed <= stold(n)) {
-            preresult = mid;
-            prelow = mid;
-        } else {
-            prehigh = mid;
-        }
-    }
-
-    stringstream result, res;
-    result << fixed << setprecision(11) << preresult;
-    //res << fixed << setprecision(11) << preresult;
-    return result.str();
-}
-
-int main() { 
-    cin.tie(nullptr), cout.tie(nullptr) 
-    -> ios_base::sync_with_stdio(false);
-    //file_chuan("TASK");
-    string n, ans;
+int main(){
+    file_chuan("TASK");
+    faster
+    Eratosthenes_Sieve();
     cin >> n;
-    ans = cubeRoot(n);
-    ans.pop_back();
-    cout << ans;
-
-    return 0;   
+    for(int x, i=1; i<=n; ++i){
+        cin >> x;
+        if(prime[x]) a[++m] = x;
+    }
+    dp[1] = 1, b[1] = 1;
+    int r=1;
+    for(int i=2; i<=m; ++i){
+        int k = binary(1, dp[r], a[i]);
+        dp[i] = dp[k] + 1;
+        b[dp[i]] = i;
+        if(dp[i] > dp[r]) r=i;
+    }
+    cout << dp[r] << "\n";
 }
+/*5
+11 2 3 4 7*/
