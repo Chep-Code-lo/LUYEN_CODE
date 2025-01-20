@@ -37,14 +37,14 @@ int main(){
     for(int test=1; test<=TEST; ++test){
         ofstream inp((NAME + ".inp").c_str());
         // Code sinh
-        long long n = Rand(1, 1e5);
+        long long n = Rand(1, 150);
         long long k = Rand(1, 100);
-        //string s = random_string(n);
-        inp << n ;
-        for(int i=0; i<n; ++i){
+        string s = random_string(n);
+        inp << s ;
+        /*for(int i=0; i<n; ++i){
             long long x = Rand(-1e6, 1e6);
             inp << x << " ";
-        }
+        }*/
         inp.close();
         system((NAME +".exe").c_str());
         system((NAME +"_trau.exe").c_str());

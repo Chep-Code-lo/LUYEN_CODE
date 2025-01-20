@@ -1,48 +1,43 @@
-#include <iostream>
-#include <vector>
-#include <unordered_map>
-
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#define naxi(x, y, z) nax(x, nax(y, z))
 using namespace std;
-
-long long count_good_segments(int n, int k, const vector<int>& a) {
-    unordered_map<int, int> freq; // Đếm số lượng xuất hiện của mỗi giá trị
-    int distinct_count = 0; // Số lượng giá trị riêng biệt
-    long long count = 0; // Tổng số lượng phân đoạn tốt
-    int l = 0; // Con trỏ trái
-
-    for (int r = 0; r < n; ++r) {
-        // Thêm a[r] vào phân đoạn
-        if (freq[a[r]] == 0) {
-            distinct_count++;
-        }
-        freq[a[r]]++;
-
-        // Nếu số lượng giá trị riêng biệt vượt quá k, thu hẹp từ bên trái
-        while (distinct_count > k) {
-            freq[a[l]]--;
-            if (freq[a[l]] == 0) {
-                distinct_count--;
-            }
-            l++;
-        }
-
-        // Tính số lượng phân đoạn tốt từ l đến r
-        count += (r - l + 1);
-    }
-
-    return count;
-}
-
+int n;
+long long res = -1e10, f[1005][1005], a[1005][1005], trace[1005][1005];
 int main() {
-    int n, k;
-    cin >> n >> k;
-    vector<int> a(n);
-    for (int i = 0; i < n; ++i) {
-        cin >> a[i];
+    cin >> n;
+    for(int i=1; i<=n; ++i)
+        for(int j=1; j<=n; ++j) cin >> a[i][j];
+    for(int i=0; i<=n; ++i) f[0][i] = f[n+1][i] = -1e15;
+    for(int j=1; j<=n; ++j){
+        for(int i=1; i<=n; ++i){
+            if(f[i-1][j-1] >= f[i][j-1] && f[i-1][j-1] >= f[i+1][j-1]){
+                f[i][j] = f[i-1][j-1] + a[i][j];
+                trace[i][j] = i-1;
+            }else if (f[i][j-1] >= f[i+1][j-1]){
+                f[i][j] = f[i][j-1] + a[i][j];
+                trace[i][j] = i;
+            }else{
+                f[i][j] = f[i+1][j-1] + a[i][j];
+                trace[i][j] = i+1;
+            }
+        }
     }
-
-    long long result = count_good_segments(n, k, a);
-    cout << result << endl;
-
-    return 0;
+    int best_row = 1;
+    for(int i=1; i<=n; ++i){
+        if(f[i][n] > res){
+            res = f[i][n];
+            best_row = i;
+        }
+    }
+    vector<int>ans;
+    int current_row = best_row;
+    for(int j=n; j>=1; j--){
+        ans.push_back(a[current_row][j]);
+        current_row = trace[current_row][j];
+    }
+    reverse(ans.begin(), ans.end());
+    cout << res << "\n";
+    //for(int x : ans)   cout << x << " ";
 }
