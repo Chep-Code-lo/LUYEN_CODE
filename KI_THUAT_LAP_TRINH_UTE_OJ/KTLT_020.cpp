@@ -33,7 +33,8 @@ void bfs(){
             for(int i=0; i<4; ++i){
                 int nx = top.first + dir[i][0];
                 int ny = top.second + dir[i][1];
-                 if(nx >= 0 && nx < n && ny >= 0 && ny < m && !visited[nx][ny] && (matrix[nx][ny] == '.' || matrix[nx][ny] == 'B')){
+                 if(nx >= 0 && nx < n && ny >= 0 && ny < m && !visited[nx][ny] 
+                 && (matrix[nx][ny] == '.' || matrix[nx][ny] == 'B')){
                     visited[nx][ny] = true;
                     q.push({nx, ny});
                  }
