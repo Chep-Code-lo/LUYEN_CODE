@@ -3,46 +3,47 @@
 #include <vector>
 #define int long long
 using namespace std;
-struct PhanSo{
-    int tu, mau;
-    void rut_gon(){
-        int gcd = __gcd(tu, mau);
-        tu /= gcd;
-        mau /= gcd;
-        if(mau < 0){
-            tu = -tu;
-            mau = -mau;
+class PhanSo{
+    public:
+        int tu, mau;
+        void rut_gon(){
+            int gcd = __gcd(tu, mau);
+            tu /= gcd;
+            mau /= gcd;
+            if(mau < 0){
+                tu = -tu;
+                mau = -mau;
+            }
         }
-    }
-    PhanSo rev() const{
-        int mau_temp = tu;
-        int tu_temp = mau;
-        if(mau_temp < 0){
-            mau_temp = -mau_temp;
-            tu_temp = -tu_temp;
+        PhanSo rev() const{
+            int mau_temp = tu;
+            int tu_temp = mau;
+            if(mau_temp < 0){
+                mau_temp = -mau_temp;
+                tu_temp = -tu_temp;
+            }
+            return {tu_temp, mau_temp};
         }
-        return {tu_temp, mau_temp};
-    }
-    bool operator>(const PhanSo &other) const{
-        return tu * other.mau > mau * other.tu;
-    }
-    PhanSo operator+(const PhanSo &other) const{
-        int newTu = tu * other.mau + other.tu * mau;
-        int newMau = mau * other.mau;
-        PhanSo result = {newTu, newMau};
-        result.rut_gon();
-        return result;
-    }
-    PhanSo operator*(const PhanSo &other) const{
-        int newTu = tu * other.tu;
-        int newMau = mau * other.mau;
-        PhanSo result = {newTu, newMau};
-        result.rut_gon();
-        return result;
-    }
-    void print() const{
-        cout << tu << " " << mau << "\n";
-    }
+        bool operator>(const PhanSo &other) const{
+            return tu * other.mau > mau * other.tu;
+        }
+        PhanSo operator+(const PhanSo &other) const{
+            int newTu = tu * other.mau + other.tu * mau;
+            int newMau = mau * other.mau;
+            PhanSo result = {newTu, newMau};
+            result.rut_gon();
+            return result;
+        }
+        PhanSo operator*(const PhanSo &other) const{
+            int newTu = tu * other.tu;
+            int newMau = mau * other.mau;
+            PhanSo result = {newTu, newMau};
+            result.rut_gon();
+            return result;
+        }
+        void print() const{
+            cout << tu << " " << mau << "\n";
+        }
 };
 void in(PhanSo &ps){
     cin >> ps.tu >> ps.mau;
