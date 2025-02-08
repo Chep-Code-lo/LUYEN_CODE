@@ -6,40 +6,176 @@
 #define file_trau(name) freopen(name".inp","r",stdin); freopen(name".ans","w",stdout);
 #define faster ios_base:: sync_with_stdio(0); cin.tie(0); cout.tie(0);
 using namespace std;
-const int M = 1e6;
-int n, ans = 1, prime[M+1];
-vector<int>dp(M, 1e6);
-vector<int>add;
-void Eratosthenes_Sieve(){
-    for(int i=1; i<=M; ++i) prime[i] = 1;
-    prime[0] = prime[1] = 0;
-    for(int i=2; i<=sqrt(M); ++i)
-        if(prime[i])
-            for(int j=i*i; j<=M; j+=i)
-                prime[j] = 0;
-}
-void input(){
-    cin >> n;
-    for(int x, i=0; i<n; ++i){
-        cin >> x;
-        if(prime[x]) add.push_back(x);
-    } 
-}
-void solve(){
-    dp[0] = -1e6;
-    for(int i=0; i<add.size(); ++i){
-        int k = lower_bound(dp.begin(), dp.end(), add[i]) - dp.begin();
-        dp[k] = add[i];
-        ans = max(ans, k);
+struct PHANSO
+{
+    long long t, m;
+};
+
+long long gcd(long long a, long long b)
+{
+
+    a = abs(a);
+    b = abs(b);
+    if (b == 0)
+    {
+        return a;
     }
-    cout << ans << "\n";
+    else
+    {
+        return gcd(b, a % b);
+    }
 }
-int main(){
+
+void Nhap(PHANSO a[1000], int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        cin >> a[i].t >> a[i].m;
+    }
+}
+
+void Xuat(PHANSO a[1000], int n)
+{
+
+    for (int i = 0; i < n; i++)
+    {
+        cout << a[i].t << " " << a[i].m;
+    }
+}
+
+void toigian(PHANSO &x)
+{
+    int boi = gcd(x.t, x.m);
+
+    if (x.m < 0)
+    {
+        x.m *= -1;
+        x.t *= -1;
+    }
+
+    x.t = x.t / boi;
+    x.m = x.m / boi;
+}
+
+int sosanh(PHANSO a, PHANSO b)
+{
+    toigian(a);
+    toigian(b);
+
+    if (a.t * b.m > a.m * b.t)
+        return 1;
+
+    else if (a.t * b.m < a.m * b.t)
+        return -1;
+
+    else
+        return 0;
+}
+
+PHANSO tong(PHANSO a, PHANSO b)
+{
+    PHANSO sum;
+    sum.t = a.t * b.m + a.m * b.t;
+    sum.m = a.m * b.m;
+    toigian(sum);
+    return sum;
+}
+
+PHANSO maxps(PHANSO a[1000], int n)
+{
+
+    PHANSO max = a[0];
+    for (int i = 1; i < n; i++)
+    {
+
+        if (sosanh(a[i], max) == 1)
+            max = a[i];
+    }
+
+    toigian(max);
+
+    return max;
+}
+
+PHANSO tich(PHANSO a, PHANSO b)
+{
+
+    a.t = a.t * b.t;
+
+    a.m = a.m * b.m;
+
+    toigian(a);
+
+    return a;
+}
+
+bool check(PHANSO x)
+{
+
+    if (x.t % x.m == 0)
+        return true;
+
+    return false;
+}
+
+void latNguoc(PHANSO &x)
+{
+
+    int cnt = x.t;
+
+    x.t = x.m;
+
+    x.m = cnt;
+
+    toigian(x);
+}
+
+int main()
+{
     file_trau("TASK");
-    faster
-    Eratosthenes_Sieve();
-    input();
-    solve();
+    PHANSO a[1000];
+
+    int n;
+    cin >> n;
+
+    Nhap(a, n);
+
+    cout << maxps(a, n).t << " " << maxps(a, n).m << endl;
+
+    PHANSO sum = a[0];
+
+    for (int i = 1; i < n; i++)
+    {
+
+        sum = tong(sum, a[i]);
+    }
+
+    toigian(sum);
+
+    cout << sum.t << " " << sum.m << endl;
+
+    PHANSO th = a[0];
+
+    for (int i = 1; i < n; i++)
+    {
+
+        th = tich(th, a[i]);
+    }
+
+    toigian(th);
+
+    cout << th.t << " " << th.m << endl;
+
+    for (int i = 0; i < n; i++)
+    {
+
+        latNguoc(a[i]);
+
+        cout << a[i].t << " " << a[i].m;
+
+        if (i < n - 1)
+            cout << " ";
+    }
+
+    return 0;
 }
-/*5
-11 2 3 4 7*/

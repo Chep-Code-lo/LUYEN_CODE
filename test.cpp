@@ -1,34 +1,273 @@
-#include<iostream>
-#include<vector>
-#include<algorithm>
-#include<math.h>
-#define file(name) freopen(name".inp","r",stdin); freopen(name".txt","w",stdout);
-#define file_trau(name) freopen(name".inp","r",stdin); freopen(name".ans","w",stdout);
-#define faster ios_base:: sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#include <bits/stdc++.h>
 using namespace std;
-const int M = 1e6;
-int n, ans = 1, prime[M+1];
-vector<int>dp(M, 1e6);
-vector<int>add;
-void Eratosthenes_Sieve(){
-    for(int i=1; i<=M; ++i) prime[i] = 1;
-    prime[0] = prime[1] = 0;
-    for(int i=2; i<=sqrt(M); ++i)
-        if(prime[i])
-            for(int j=i*i; j<=M; j+=i)
-                prime[j] = 0;
-}
-void input(){
-    Eratosthenes_Sieve();
-    cin >> n;
-    for(int x, i=0; i<n; ++i){
-        cin >> x;
-        if(prime[x]) add.push_back(x);
+const int base = 1e9;
+const int base_digits = 9;
+struct bigint{
+	vector<int>a;
+	int sign;
+	bigint(): sign(1){ }
+	bigint(long long v) { *this = v; }
+	bigint(const string &s) { read(s); }
+	void operator=(const bigint &v) { sign = v.sign; a = v.a; }
+    bigint operator/(const bigint &v) const{return divmod(*this, v).first;}
+    bigint operator%(const bigint &v) const{return divmod(*this, v).second;}
+    bigint operator/(int v) const{bigint res = *this; res /=v; return res;}
+    void operator*=(const bigint &v) {*this = *this*v;}
+    void operator+=(const bigint &v) {*this = *this+v;}
+    void operator-=(const bigint &v) {*this = *this-v;}
+    void operator/=(const bigint &v) {*this = *this/v;}
+    bool operator>(const bigint &v) const{return v<*this;}
+    bool operator<=(const bigint &v) const{return !(v<*this);}
+    bool operator>=(const bigint &v) const{return !(*this<v);}
+    bool operator==(const bigint &v) const{return !(*this<v) && !(v<*this);}
+    bool operator!=(const bigint &v) const{return *this<v || v<*this;}
+    bool operator<(const bigint &v) const{
+        if(sign != v.sign)	return sign<v.sign;
+        if(a.size() != v.a.size())	return a.size()*sign < v.a.size()*v.sign;
+        for(int i=a.size()-1; i>+0; --i)
+            if(a[i] != v.a[i])	return a[i]*sign < v.a[i]*sign;
+        return false;
     }
-    for(auto x : add)   cout << x << " ";
+    bool isZero() const{return a.empty() || (a.size() == 1 && !a[0]);}
+    void trim(){
+        while(!a.empty() && !a.back())	a.pop_back();
+        if(a.empty())	sign=1;
+    }
+    bigint abs() const{
+        bigint res = *this;
+        res.sign *= res.sign;
+        return res;
+    }
+	void operator=(long long v){
+		sign = 1;
+		if(v < 0) 	sign = -1, v = -v;
+		for(; v>0; v=v/base)	a.push_back(v%base);
+    }
+    bigint operator+(const bigint &v) const{
+        if(sign == v.sign){
+            bigint res = v;
+            for(int i=0, carry=0; i<(int)max(a.size(), v.a.size()) || carry; ++i){
+                if(i == (int) res.a.size())	res.a.push_back(0);
+                res.a[i] += carry + (i<(int)a.size() ? a[i] : 0);
+                carry = res.a[i] >= base;
+                if(carry)	res.a[i] -= base;
+            }
+            return res;
+        }
+        return *this - (-v);
+    }
+    bigint operator-(const bigint &v) const{
+        if(sign == v.sign){
+            if(abs() >= v.abs()){
+                bigint res = *this;
+                for(int i=0, carry=0; i<(int)v.a.size() || carry; ++i){
+                    res.a[i] -= carry + (i<(int)v.a.size() ? v.a[i] : 0);
+                    carry = res.a[i] < 0;
+                    if(carry) 	res.a[i] += base;	
+                }
+                res.trim();
+                return res;
+            }
+            return -(v - *this);
+        }
+        return *this + (-v);
+    }
+    bigint operator-() const{
+        bigint res = *this;
+        res.sign = -sign;
+        return res;
+    }
+     int operator%(int v) const{
+        if(v<0) v = -v;
+        int m=0;
+        for(int i=a.size()-1; i>=0; --i)	m = (a[i] + m*(long long)base)%v;
+        return m*sign;
+    }
+    void operator/=(int v){
+        if(v<0) sign=-sign, v=-v;
+        for(int i=(int)a.size()-1, rem=0; i>=0; --i){
+            long long cur = a[i] + rem*(long long)base;
+            a[i] = (int)(cur/v), rem = (int)(cur%v);
+        }
+        trim();
+    }
+    bigint operator*(const bigint &v) const{
+        bigint res;
+        res.sign = sign * v.sign;
+        res.a.resize(a.size() + v.a.size());
+        for(int i=0; i<(int)a.size(); ++i){
+            long long carry = 0;
+            for(int j=0; j<(int)v.a.size() || carry; ++j){
+                long long cur = res.a[i + j] + (long long)a[i] * (j<(int)v.a.size() ? v.a[j] : 0) + carry;
+                res.a[i + j] = cur % base;
+                carry = cur / base;
+            }
+        }
+        res.trim();
+        return res;
+    }
+    friend pair<bigint, bigint>divmod(const bigint &a1, const bigint &b1){
+        int norm = base/(b1.a.back() + 1);
+        bigint q, r, a=a1.abs()*norm, b=b1.abs()*norm;
+        q.a.resize(a.a.size());
+        for(int i=a.a.size()-1; i>=0; i--){
+            r *= base, r+= a.a[i];
+            int s1 = r.a.size() <= b.a.size() ? 0 : r.a[b.a.size()];
+            int s2 = r.a.size() <= b.a.size() - 1 ? 0 : r.a[b.a.size() - 1];
+            int d = ((long long)base*s1+s2) / b.a.back();
+            r -= b*d;
+            while(r < 0)    r+=b, --d;
+            q.a[i] = d;
+        }
+        q.sign = a1.sign*b1.sign;
+        r.sign = a1.sign;
+        q.trim();
+        r.trim();
+        return make_pair(q, r/norm);
+    }
+    //Chuyển bigint sang long long
+    long long longValue() const{
+        long long res=0;
+        for(int i=a.size()-1; i>=0; i--)	res = res*base + a[i];
+        return res*sign;
+    }
+    friend bigint gcd(const bigint &a, const bigint &b){return b.isZero() ? a : gcd(b, a%b);}
+    friend bigint lcm(const bigint &a, const bigint &b){return a/gcd(a, b)*b;}
+    void read(const string &s){
+        sign=1;
+        a.clear();
+        int pos=0;
+        while(pos<(int)s.size() && (s[pos] == '-' || s[pos] == '+')){
+            if(s[pos] == '-')	sign = -sign;
+            ++pos;
+        }
+        for(int i=s.size()-1; i>=pos; i-=base_digits){
+            int x=0;
+            for(int j=max(pos, i-base_digits+1); j<=i; j++)	x=x*10 + s[j] - '0';
+            a.push_back(x);
+        }
+        trim();
+    }
+    friend istream& operator>>(istream &stream, bigint &v){
+        string s;
+        stream >> s;
+        v.read(s);
+        return stream;
+    }
+    friend ostream& operator<<(ostream &stream, const bigint &v){
+        if (v.sign == -1)
+            stream << '-';
+        stream << (v.a.empty() ? 0 : v.a.back());
+        for(int i=(int)v.a.size()-2; i>=0; --i)
+            stream << setw(base_digits) << setfill('0') << v.a[i];
+        return stream;
+    }
+};
+struct PhanSo{
+    int tu, mau;
+    void rut_gon(){
+        bigint gcd1 = __gcd(tu, mau);
+        tu /= gcd1;
+        mau /= gcd1;
+        if(mau < 0){
+            tu = -tu;
+            mau = -mau;
+        }
+    }
+    PhanSo rev() const{
+        int mau_temp = tu;
+        int tu_temp = mau;
+        if(mau_temp < 0){
+            mau_temp = -mau_temp;
+            tu_temp = -tu_temp;
+        }
+        return {tu_temp, mau_temp};
+    }
+    bool operator>(const PhanSo &other) const{
+        return tu * other.mau > mau * other.tu;
+    }
+    PhanSo operator+(const PhanSo &other) const{
+        int newTu = tu * other.mau + other.tu * mau;
+        int newMau = mau * other.mau;
+        PhanSo result = {newTu, newMau};
+        result.rut_gon();
+        return result;
+    }
+    PhanSo operator*(const PhanSo &other) const{
+        bigint newTu = tu * other.tu;
+        bigint newMau = mau * other.mau;
+        PhanSo result = {newTu, newMau};
+        result.rut_gon();
+        return result;
+    }
+    void print() const{
+        cout << tu << " " << mau << "\n";
+    }
+};
+void in(PhanSo &ps){
+    cin >> ps.tu >> ps.mau;
+    ps.rut_gon();
+}
+void input(vector<PhanSo> &ds, int n){
+    for(int i = 0; i < n; ++i){
+        PhanSo ps;
+        in(ps);
+        ds.push_back(ps);
+    }
+}
+
+PhanSo find_max(const vector<PhanSo> &ds){
+    return *max_element(ds.begin(), ds.end(), 
+        [](const PhanSo &a, const PhanSo &b)
+            {return !(a > b);} 
+    );
+}
+PhanSo sum(const vector<PhanSo> &ds){
+    PhanSo sum = {0, 1};
+    for (const auto &ps : ds) {
+        sum = sum + ps;
+    }
+    return sum;
+}
+PhanSo product(const vector<PhanSo> &ds){
+    PhanSo product = {1, 1};
+    for (const auto &ps : ds) {
+        product = product * ps;
+    }
+    return product;
+}
+void print_rev(const vector<PhanSo> &ds){
+    for(const auto &ps : ds){
+        PhanSo rev = ps.rev();
+        cout << rev.tu << " " << rev.mau << " ";
+    }
 }
 int main(){
-    file("TASK");
-    input();
-    
+    int n;  cin >> n;
+    vector<PhanSo> ds;
+    input(ds, n);
+    find_max(ds).print();
+    sum(ds).print();
+    product(ds).print();
+    print_rev(ds);
 }
+
+/*18 
+-4 -7 
+6 6 
+-3 5 
+4 -10 
+-7 -9 
+4 7 
+-6 -5 
+6 -1 
+-6 10 
+1 -6 
+-8 -2
+1 -7 
+3 1 
+-4 5 
+2 6 
+-4 9 
+10 -3 
+-6 7*/
