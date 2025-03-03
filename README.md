@@ -1,2 +1,2 @@
 # LUYEN_CODE
-Tham khảo code thôi nhe :><:
+Toàn là code lượm nên đừng hỏi vì sao code như thế nhe :<<<>>
