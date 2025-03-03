@@ -37,13 +37,13 @@ int main(){
     for(int test=1; test<=TEST; ++test){
         ofstream inp((NAME + ".inp").c_str());
         // Code sinh
-        long long n = Rand(1, 50);
+        long long n = Rand(1, 1e5);
         long long k = Rand(1, 100);
         string s = random_string(n);
         inp << n << "\n";
         for(int i=0; i<n; ++i){
-            long long x = Rand(-10, 10);
-            long long y = Rand(-10, 10);
+            long long x = Rand(1, 1e6);
+            long long y = Rand(1, 1e6);
             inp << x << " " << y << "\n";
         }
         inp.close();

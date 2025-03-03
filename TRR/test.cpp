@@ -1,7 +1,5 @@
 #include <bits/stdc++.h>
 #define ll long long
-#define file_chuan(name) freopen(name".inp","r",stdin); freopen(name".out","w",stdout);
-#define file_trau(name) freopen(name".inp","r",stdin); freopen(name".ans","w",stdout);
 using namespace std;
 const int MAXZ = 1e6 + 1;
 bitset <MAXZ> sdb;
@@ -26,7 +24,6 @@ ll demsdb(ll a, ll b){
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
-    file_trau("TASK");
     int t; cin >> t;
     xuly();
     while (t--){
