@@ -1,41 +1,40 @@
 #include <iostream>
+#include <vector>
 #define int long long
 #define faster ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define file(name) freopen(name".INP", "r", stdin); freopen(name".OUT", "w", stdout);
 #define file_chuan(name) freopen(name".inp","r",stdin); freopen(name".out","w",stdout);
+#define file_trau(name) freopen(name".inp","r",stdin); freopen(name".ans","w",stdout);
 #define TIME  (1.0 * clock() / CLOCKS_PER_SEC)
 using namespace std;
-const int M = 1e6;
-int n, a[M], pre[M];
+int n, m, maxx, ans, a[101];
 void time(){
     cerr << "Time elapsed: ";
     cerr << TIME << "s.\n";
 }
 void input(){
-    cin >> n;
-}
-void Divisors_Sieve(){
-    for(int i=1; i<=M; ++i) a[i] = 1;
-    for(int i=2; i<=M/2; ++i)
-        for(int j=2; j<=M/i; ++j)
-            a[i*j]++;
-}
-void sieve(){
-    for(int i=1; i<=M; ++i)
-        if(i%3==0 && a[i] == 8)
-            pre[i] = pre[i-1] + 1;
-        else pre[i] = pre[i-1];
+    cin >> n >> m;
+    for(int i=0; i<n; ++i)  cin >> a[i], maxx += a[i];
 }
 void solve(){
     faster
     file_chuan("TASK");
     input();
-    Divisors_Sieve();
-    sieve();
-    while(n--){
-        int a, b; cin >> a >> b;
-        cout << pre[b] - pre[a-1] << "\n";
+    if(maxx < m){
+        cout << maxx;
+        return;
     }
+    vector<bool>dp(maxx+1, false);
+    dp[0] = true;
+    for(int i=0; i<n; ++i)
+        for(int j=maxx; j>=0; --j)
+            if(dp[j-a[i]])
+                dp[j] = true;
+    for(int s=maxx; s>=0; --s)
+        if(dp[s])
+            for(int i=0; i<n; ++i)
+                if(s - a[i] < m && s >= m)
+                    ans = max(ans, s);
+    cout << ans;
 }
 signed main(){
     solve();
