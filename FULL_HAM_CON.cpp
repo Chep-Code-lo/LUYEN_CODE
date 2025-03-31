@@ -92,7 +92,7 @@ long long Count_Divisors(long long x){
     for(int i=1; i*i<=x; i++)
         if(x%i == 0){
             cnt++;
-            if(i != n/i) cnt++; // Tránh đếm trùng khi i*i = x
+            if(i != x/i) cnt++; // Tránh đếm trùng khi i*i = x
         }
     return cnt;
 }

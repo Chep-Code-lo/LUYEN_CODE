@@ -1,4 +1,4 @@
-#include <iostream>
+#include <bits/stdc++.h>
 #include <math.h>
 #include <vector>
 //#define int long long
@@ -7,42 +7,40 @@
 #define file_trau(name) freopen(name".inp","r",stdin); freopen(name".ans","w",stdout);
 #define TIME  (1.0 * clock() / CLOCKS_PER_SEC)
 using namespace std;
-int n, m, maxx, ans, a[101];
-void time(){
-    cerr << "Time elapsed: ";
-    cerr << TIME << "s.\n";
+string Cube(string n){
+    reverse(n.begin(), n.end());
+    vector<int> square(2 * n.size()), cube(3 * n.size());
+    for(int i=0; i<n.size(); ++i)
+        for(int j=0; j<n.size(); ++j) 
+            square[i + j] += (n[i] - '0') * (n[j] - '0');
+    for(int i=0; i<n.size(); ++i)
+        for(int j=0; j<square.size(); ++j) 
+            cube[i + j] += (n[i] - '0') * square[j];
+    string res = "";
+    for(int i=0, current=0; i<cube.size(); ++i){
+        current += cube[i]; 
+        res += current % 10 + '0'; 
+        current /= 10;
+    }
+    reverse(res.begin(), res.end());
+    return res;
 }
-void input(){
-    cin >> n >> m;
-    for(int i=0; i<n; ++i)  cin >> a[i], maxx += a[i];
+string Cube_Root(string n){
+    n = string((3 - n.size() % 3) % 3, '0') + n;
+    string D = "", R = "";
+    char d;
+    for(int i=0; i<n.size(); i+=3){ 
+        for(D += n.substr(i, 3), d = '9'; Cube(R + d) > D; d--); R += d;
+    }
+    for(int i=0; i<10; ++i){ 
+        for(D += "000", d = '9'; Cube(R + d) > D; --d); R += d;
+    }
+    R.insert(R.size() - 10, ".");
+    return R;
 }
-void solve(){
-    faster
+string s;
+int main(){
     file_trau("TASK");
-    input();
-    if(maxx < m){
-        cout << maxx;
-        return;
-    }
-    for(int i=0; i<n; ++i){
-        int b = a[i];
-        vector<bool>dp(m, false);
-        dp[0] = true;
-        for(int j=0; j<n; ++j){
-            if(j == i) continue;
-            int w = a[j];
-            for(int s=m-1-w; s>=0; --s)
-                if(dp[s])
-                    dp[s+w] = true;
-            }
-        int low = max(0, m-b);
-        for(int s = low; s<m; ++s)
-            if(dp[s])
-                ans = max(ans, s+b);
-    }
-    cout << ans;
-}
-signed main(){
-    solve();
-    time();
+    cin >> s;
+    cout << Cube_Root(s);
 }

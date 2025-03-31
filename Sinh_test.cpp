@@ -9,7 +9,7 @@ long long Rand(long long l, long long r){
     return uniform_int_distribution<long long>(l, r)(rng);
 }
 string random_string(size_t length){
-    const string characters1 = "0123456789QWERTYUIOPASDFGHJKLZXCVBNMqwertyuioasdfghjklzxcvbnm";
+    //const string characters1 = "0123456789QWERTYUIOPASDFGHJKLZXCVBNMqwertyuioasdfghjklzxcvbnm";
     const string characters = "0123456789";
     random_device random_device;
     mt19937 generator(random_device());
@@ -37,15 +37,17 @@ int main(){
     for(int test=1; test<=TEST; ++test){
         ofstream inp((NAME + ".inp").c_str());
         // Code sinh
-        long long n = Rand(1, 20);
+        long long n = Rand(1, 150);
         long long k = Rand(1, 2000);
         string s = random_string(n);
-        inp << n << " " << k << "\n";
-        for(int i=0; i<n; ++i){
+        if (s[0] == '0')
+            s[0] = '1' + Rand(0, 8);
+        inp << s;
+        /*for(int i=0; i<n; ++i){
             long long x = Rand(1, 100);
             long long y = Rand(1, 1e6);
             inp << x << " ";
-        }
+        }*/
         inp.close();
         system((NAME +".exe").c_str());
         system((NAME +"_trau.exe").c_str());
