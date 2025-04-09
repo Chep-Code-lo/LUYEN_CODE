@@ -1,34 +1,155 @@
-#include <bits/stdc++.h>
-#define ll long long
+#include <iostream>
 using namespace std;
-const int MAXZ = 1e6 + 1;
-bitset <MAXZ> sdb;
-vector <ll> ttt_num;
-void xuly(){
-    sdb.reset();
-    ttt_num.resize(MAXZ,0);
-    for (int i=9;i<MAXZ;i+=3){
-        int d = 2;
-        for (int j=2;j<=sqrt(i);j++)
-            if (i%j==0) 
-                d += (j==i/j)? 1 : 2;
-        if (d==9) sdb.set(i);
-    }
-    for(int i=1;i<MAXZ;i++) ttt_num[i] = ttt_num[i-1] + sdb[i];
-
-}
-ll demsdb(ll a, ll b){
-    while (a%3!=0 && a<=b) a ++;
-    return ttt_num[b] - ttt_num[a-1];
-}
+void menhdeNoiLien();
+void menhdeNoiRoi();
+void menhdekeotheo();
+void menhdekeotheo_2C();
+void bamenhde();
+void bamenhde_01();
 int main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL); cout.tie(NULL);
-    int t; cin >> t;
-    xuly();
-    while (t--){
-        ll a, b; cin >> a >> b;
-        cout << demsdb(a,b) << "\n";
-    }
+    // menhdeNoiLien();
+    // menhdeNoiRoi();
+    // menhdekeotheo();
+    // menhdekeotheo_2C();
+    // bamenhde();
+    bamenhde_01();
     return 0;
+}
+void menhdeNoiRoi(){
+    cout << "\n" << "bang chan tri cua p v q" << endl;
+    cout << "p q   (p v q)"<< endl;
+    int e;
+    for (int p=0; p<=1; p++)
+        for (int q = 0; q<=1;  q++){
+            if (p==0 && q==0){
+                e = 0;
+                cout << p << " " << q << "     " << e << endl;
+            }
+            if (p==0 && q==1){
+                e = 1;
+                cout << p << " " << q << "     " << e << endl;
+            }
+            if (p==1 && q==0){
+                e = 1;
+                cout << p << " " << q << "     " << e << endl;
+            }
+            if (p==1 && q==1){
+                e = 1;
+                cout << p << " " << q << "     " << e << endl;
+            }
+        }
+}
+void menhdeNoiLien(){
+    cout << "\n" << "bang chan tri cua p^q" << endl;
+    cout << "p q   (p^q)"<< endl;
+    int e;
+    for (int p=0; p<=1; p++)
+        for (int q = 0; q<=1;  q++){
+            if (p==0 && q==0){
+                e = 0;
+                cout << p << " " << q << "     " << e << endl;
+            }
+            if (p==0 && q==1){
+                e = 0;
+                cout << p << " " << q << "     " << e << endl;
+            }
+            if (p==1 && q==0){
+                e = 0;
+                cout << p << " " << q << "     " << e << endl;
+            }
+            if (p==1 && q==1){
+                e = 1;
+                cout << p << " " << q << "     " << e << endl;
+            }
+        }
+}
+void menhdekeotheo(){
+    cout << "bang chan tri cua p --> q" << endl;
+    cout << "p q  p --> q"<< endl;
+    int p,q,e;
+    e = 0;
+    for (int p=0; p<=1; p++)
+        for (int q = 0; q<=1;  q++){
+            if (p==0 && q==0){
+                e = 1;
+                cout << p << " " << q << "     " << e << endl;
+            }
+            if (p==0 && q==1){
+                e = 1;
+                cout << p << " " << q << "     " << e << endl;
+            }
+            if (p==1 && q==0){
+                e = 0;
+                cout << p << " " << q << "     " << e << endl;
+            }
+            if (p==1 && q==1){
+                e = 1;
+                cout << p << " " << q << "     " << e << endl;
+            }
+        }
+}
+void menhdekeotheo_2C(){
+    cout << "bang chan tri cua p <--> q" << endl;
+    cout << "p q  p <--> q"<< endl;
+    int p,q,e;
+    e = 0;
+    for (int p=0; p<=1; p++)
+        for (int q = 0; q<=1;  q++){
+            if (p==0 && q==0){
+                e = 1;
+                cout << p << " " << q << "     " << e << endl;
+            }
+            if (p==0 && q==1){
+                e = 0;
+                cout << p << " " << q << "     " << e << endl;
+            }
+            if (p==1 && q==0){
+                e = 0;
+                cout << p << " " << q << "     " << e << endl;
+            }
+            if (p==1 && q==1){
+                e = 1;
+                cout << p << " " << q << "     " << e << endl;
+            }
+        }
+}
+void bamenhde(){
+    cout << "\n" << "bang chan tri cua (p --> q)^r" << endl;
+    cout << "p q r   (p-->q)   (p --> q)^r"<< endl;
+    int p,q,r,e,f;
+    for (int p=0; p<=1; p++)
+        for (int q = 0; q<=1;  q++)
+            for (int r=0; r<=1;r++){
+                if ((p==0 && q==0)||(p==0 && q==1) || (p==1 && q==1)){
+                    e = 1;
+                    if (r == 0) f = 0;
+                    else f = 1;
+                    cout << p << " " << q << " " << r << "      " << e << "          " << f << endl;
+                }
+                if (p==1 && q==0){
+                    e = 0;
+                    f = 0;
+                    cout << p << " " << q << " " << r << "      " << e << "          " << f << endl;
+                }
+            }
+}
+void bamenhde_01(){
+    cout << "\n" << "bang chan tri cua (p <--> q)^r" << endl;
+    cout << "p q r   (p<-->q)   (p <--> q)^r"<< endl;
+    int p,q,r,e,f;
+    for (int p=0; p<=1; p++)
+        for (int q = 0; q<=1;  q++)
+            for (int r=0; r<=1;r++){
+                if ((p==0 && q==0) || (p==1 && q==1)){
+                    e = 1;
+                    if (r == 0) f = 0;
+                    else f = 1;
+                    cout << p << " " << q << " " << r << "      " << e << "          " << f << endl;
+                }
+                else {
+                    e = 0;
+                    f = 0;
+                    cout << p << " " << q << " " << r << "      " << e << "          " << f << endl;
+                }
+            }
 }
