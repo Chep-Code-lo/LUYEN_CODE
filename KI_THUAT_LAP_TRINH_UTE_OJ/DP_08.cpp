@@ -5,33 +5,27 @@
 #define file(name) freopen(name".INP", "r", stdin); freopen(name".OUT", "w", stdout);
 #define TIME  (1.0 * clock() / CLOCKS_PER_SEC)
 using namespace std;
-const int N = 5e4+1;
-/*  Theo bài toán thì thì tìm cặp (i, j) với i<j và a[j] - a[i] đạt max
-*/
-int n, a[N];
+int n, r, c, s[51];
 void print_time(){
     cerr << "Time elapsed: ";
     cerr << TIME << "s.\n";
 }
 void input(){
-	cin >> n;
-	for(int i=1; i<=n; ++i)	cin >> a[i];
+	cin >> n >> r >> c;
+	for(int i=1; i<=n; ++i)	cin >> s[i];
 }
 void solve(){
 	faster
 	//file("");
     input();
-    vector<int> dp_no(n+1, 0), dp_yes(n+1, 0);
-    dp_no[0] = 0;
-    dp_yes[0] = -1e9;
-    dp_yes[1] = -a[1];
-    dp_no[1]  = 0;
-    for(int i=2; i<=n; ++i){
-        dp_no[i] = max(dp_no[i-1], dp_yes[i-1] + a[i]);
-        dp_yes[i] = max(dp_yes[i-1], -a[i]);
+    vector<int>dp(n+1, 1e9);
+    dp[0] = 0;
+    for(int i=0; i<n; ++i){
+    	dp[i+1] = min(dp[i+1], dp[i] + r*s[i+1]);
+    	int next = (i + 4 <= n ? i + 4 : n);
+        dp[next] = min(dp[next], dp[i] + c * 4);
     }
-    int ans = dp_no[n];
-    cout << max(ans, 0LL);
+    cout << dp[n];
 }
 signed main(){
     solve();

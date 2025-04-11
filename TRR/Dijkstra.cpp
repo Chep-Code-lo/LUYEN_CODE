@@ -52,17 +52,17 @@ void solve(){
     //for(int i=0; i<t.size(); ++i)	cout << t[i] << " ";
     while(!t.empty()){
         int min_post = find_min(t, d);
-        //cout << min_post << " ";
+        cout << min_post << " ";
         t.erase(t.begin() + min_post);
         //cout << t.size() << " ";
         for(int i=0; i<t.size(); i++){
-            if (d[t[i]] > d[min_post] + a[min_post][t[i]]){
-                d[t[i]] = d[min_post] + a[min_post][t[i]];
-                truoc[t[i]] = min_post;
+            if (d[i] > d[min_post] + a[min_post][i]){
+                d[i] = d[min_post] + a[min_post][i];
+                truoc[i] = min_post;
             }
         } 
     }
-    for(int i=0; i<n; ++i)	cout << d[i] << " ";
+    //for(int i=0; i<n; ++i)	cout << d[i] << " ";
 }
 signed main(){
     solve();
