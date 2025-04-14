@@ -11,7 +11,7 @@ using namespace std;
  			  - Tìm nhà xa nhất trong phạm vi b
  			  - Lặp lại thao tác*/
 const int N = 1e4+1;
-int B, n, b, count, pos, a[N];
+int B, n, b, count = 1, pos, a[N];
 void time(){
     cerr << "Time elapsed: ";
     cerr << TIME << "s.\n";
@@ -24,14 +24,12 @@ void solve(){
 	faster
 	//file("");
     input();
-    int i = 0;
-    while(i < n){
-    	count += 1;
-    	pos = a[i];
-    	while(i < n && a[i] <= pos + b)	i++;
-    	pos = a[i-1];
-    	while(i < n && a[i] <= pos + b)	i++;
-    }
+    int x = a[0];
+    for(int i=1; i<n; ++i)
+        if(a[i] - x > 2*b){
+            count++;
+            x = a[i];
+        }
     cout << count;
 }
 signed main(){
