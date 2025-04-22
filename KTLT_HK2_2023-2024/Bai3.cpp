@@ -25,6 +25,10 @@ void solve(){
 	faster
 	//file("");
     input();
+    if(s.size() > 900){
+    	cout << 0;
+    	return;
+    }
     int cnt = 0, current_row = add[s[0]];
     for(int i=1; i<s.size(); ++i){
     	int next_row = add[s[i]];

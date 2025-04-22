@@ -1,61 +1,68 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
-#include <math.h>
 //#define int long long
 #define faster ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define file(name) freopen(name".INP", "r", stdin); freopen(name".OUT", "w", stdout);
+#define file(name) freopen(name".inp", "r", stdin); freopen(name".out", "w", stdout);
 #define TIME  (1.0 * clock() / CLOCKS_PER_SEC)
 using namespace std;
-int n, m, cnt, a[100], f[100];
-bool avail[100];
-void time(){
+const int N = 1e3+1;
+int n, degree[N], a[N][N];
+vector<int>treo, co;
+void print_time(){
     cerr << "Time elapsed: ";
     cerr << TIME << "s.\n";
 }
 void input(){
-	cin >> n >> m;
-	for(int i=0; i<n; ++i)	cin >> a[i];
-	sort(a, a+n);
+	cin >> n;
+	for(int i=0; i<n; ++i)
+		for(int j=0; j<n; ++j)	cin >> a[i][j];
 }
-void print(){
-	++cnt;
-	for(int i=0; i<m; ++i)	cout << f[i] << " ";
-	cout << "\n";
-}
-void backtrack_no_lap(int x){
-	if(x == m){
-		print();
-		return;
-	}
+void edge(){
+	pair<int, int> add = {-1, -1};
+	bool check = false;
 	for(int i=0; i<n; ++i){
-		if(!avail[i]){
-			avail[i] = true;
-			f[x] = a[i];
-			backtrack_no_lap(x+1);
-			avail[i] = false;
+		for(int j=i+1; j<n; ++j)
+			if(a[i][j] >= 2){
+				add = {i, j};
+				check = true;
+				break;
+			}
+		if(check) break;
+	}
+	if(check)	cout << add.first << " " << add.second;
+	else cout << "Khong tim thay";
+}
+void peak(){
+	for(int i=0; i<n; ++i){
+		int sum = 0;
+		for(int j=0; j<n; ++j){
+			if(i==j)	sum += 2*a[i][j];
+			else sum += a[i][j];
 		}
-	}
-}
-void backtrack_lap(int x){
-	if(x == m){
-		print();
-		return;
+		degree[i] = sum;
 	}
 	for(int i=0; i<n; ++i){
-		f[x] = a[i];
-		backtrack_lap(x+1);
+		if(degree[i] == 1)
+			treo.push_back(i);
+		if(degree[i] == 0)
+			co.push_back(i);
 	}
 }
 void solve(){
 	faster
-	//file("");
+	file("Ma_tran_ke");
     input();
-    backtrack_lap(0); //(Chỉnh hợp lặp)
-    backtrack_no_lap(0); //(Chỉnh hợp không lặp)
-    cout << cnt << "\n";
+    cout << "Cap canh song song :\n";
+    edge();
+    peak();
+    cout << "\nDinh treo\n";
+    for(int x : treo)
+    	cout << x << " ";
+    cout << "\nDinh co lap\n";
+    for(int x : co)
+    	cout << x << " ";
 }
 signed main(){
     solve();
-    time();
+    print_time();
 }

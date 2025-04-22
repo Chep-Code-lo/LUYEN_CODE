@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <format>
+#include <algorithm>
 #define int long long
 #define faster ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 #define file(name) freopen(name".INP", "r", stdin); freopen(name".OUT", "w", stdout);
@@ -22,7 +23,7 @@ string center(string s, int w){
 }
 void solve(){
     faster
-    //file("");
+    file("Chan_tri");
     //input();
     cout << left << setw(3) << "p" 
          << left << setw(3) << "q" 

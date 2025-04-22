@@ -166,4 +166,7 @@ struct bigint{
     }
 };
 int main(){
+    bigint n; cin >> n;
+    bigint s ( "9999999999999999999999999999999999999999999999999999999");
+    cout << n*s;
 }

@@ -1,8 +1,8 @@
-Khoang cach tu 0 den 0: 0
-Duong di: 0
-Khoang cach tu 0 den 1: 1
-Duong di: 0 -> 1
-Khoang cach tu 0 den 2: 3
-Duong di: 0 -> 1 -> 2
-Khoang cach tu 0 den 3: 6
-Duong di: 0 -> 1 -> 2 -> 3
+0 1 1 0 0 0 0 1 
+1 0 0 1 0 0 0 1 
+1 0 0 1 0 1 0 0 
+0 1 1 0 1 0 0 0 
+0 0 0 1 0 1 0 1 
+0 0 1 0 1 0 1 0 
+0 0 0 0 0 1 0 0 
+1 1 0 0 1 0 0 0 
