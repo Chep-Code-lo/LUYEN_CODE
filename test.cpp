@@ -1,45 +1,30 @@
 #include <bits/stdc++.h>
 using namespace std;
-using int64 = long long;
 
-int main(){
+int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int T;
-    cin >> T;
+    int T;                          // number of test cases
+    if (!(cin >> T)) return 0;
     while (T--) {
-        int n, k;
-        cin >> n >> k;
+        int n, root;
+        cin >> n >> root;           // root is given but not needed
 
-        vector<int64> L(n), R(n), m(n);
-        for (int i = 0; i < n; i++) cin >> L[i];
-        for (int i = 0; i < n; i++) cin >> R[i];
+        vector<int> a(n + 1);
+        for (int i = 1; i <= n; ++i) cin >> a[i];
 
-        // total số găng tay
-        int64 total = 0;
-        for (int i = 0; i < n; i++) {
-            total += L[i] + R[i];
-            m[i] = min(L[i], R[i]);
+        /* skip the edges */
+        for (int i = 1; i < n; ++i) {
+            int u, v; cin >> u >> v;
         }
 
-        // sort m giảm dần rồi tính prefix sum
-        sort(m.begin(), m.end(), greater<int64>());
-        vector<int64> pref(n+1, 0);
-        for (int i = 1; i <= n; i++) {
-            pref[i] = pref[i-1] + m[i-1];
+        /* output the final values of every vertex */
+        for (int i = 1; i <= n; ++i) {
+            if (i > 1) cout << ' ';
+            cout << a[i];
         }
-
-        // minsum = tổng tất cả m[i]
-        int64 minsum = pref[n];
-        // sum_top = tổng k-1 giá trị m lớn nhất
-        int64 sum_top = pref[k-1];
-
-        // Xmax = số găng tay tối đa mà đối thủ có thể rút mà chưa bị bắt buộc có k đôi màu khác nhau
-        int64 Xmax = total - minsum + sum_top;
-        // đáp án = Xmax + 1
-        cout << (Xmax + 1) << "\n";
+        cout << '\n';
     }
-
     return 0;
 }
