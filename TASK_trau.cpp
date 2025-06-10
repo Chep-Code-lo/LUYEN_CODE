@@ -7,40 +7,37 @@
 #define file_trau(name) freopen(name".inp","r",stdin); freopen(name".ans","w",stdout);
 #define TIME  (1.0 * clock() / CLOCKS_PER_SEC)
 using namespace std;
-string Cube(string n){
-    reverse(n.begin(), n.end());
-    vector<int> square(2 * n.size()), cube(3 * n.size());
-    for(int i=0; i<n.size(); ++i)
-        for(int j=0; j<n.size(); ++j) 
-            square[i + j] += (n[i] - '0') * (n[j] - '0');
-    for(int i=0; i<n.size(); ++i)
-        for(int j=0; j<square.size(); ++j) 
-            cube[i + j] += (n[i] - '0') * square[j];
-    string res = "";
-    for(int i=0, current=0; i<cube.size(); ++i){
-        current += cube[i]; 
-        res += current % 10 + '0'; 
-        current /= 10;
-    }
-    reverse(res.begin(), res.end());
-    return res;
+const int M = 1e6;
+int n, ans, prime[M+1];
+vector<int>dp(M, 1e6);
+vector<int>add;
+void Eratosthenes_Sieve(){
+    for(int i=1; i<=M; ++i) prime[i] = 1;
+    prime[0] = prime[1] = 0;
+    for(int i=2; i<=sqrt(M); ++i)
+        if(prime[i])
+            for(int j=i*i; j<=M; j+=i)
+                prime[j] = 0;
 }
-string Cube_Root(string n){
-    n = string((3 - n.size() % 3) % 3, '0') + n;
-    string D = "", R = "";
-    char d;
-    for(int i=0; i<n.size(); i+=3){ 
-        for(D += n.substr(i, 3), d = '9'; Cube(R + d) > D; d--); R += d;
-    }
-    for(int i=0; i<10; ++i){ 
-        for(D += "000", d = '9'; Cube(R + d) > D; --d); R += d;
-    }
-    R.insert(R.size() - 10, ".");
-    return R;
+void input(){
+    cin >> n;
+    for(int x, i=0; i<n; ++i){
+        cin >> x;
+        if(prime[x]) add.push_back(x);
+    } 
 }
-string s;
+void solve(){
+    dp[0] = -1e6;
+    for(int i=0; i<add.size(); ++i){
+        int k = lower_bound(dp.begin(), dp.end(), add[i]) - dp.begin();
+        dp[k] = add[i];
+        ans = max(ans, k);
+    }
+    cout << ans;
+}
 int main(){
     file_trau("TASK");
-    cin >> s;
-    cout << Cube_Root(s);
+    Eratosthenes_Sieve();
+    input();
+    solve();
 }
